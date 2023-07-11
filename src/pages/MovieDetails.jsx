@@ -1,13 +1,13 @@
 import { useParams, Outlet, useNavigate } from 'react-router-dom';
 import { useState, useEffect, Suspense } from 'react';
 
-import { Toaster } from 'react-hot-toast';
 import { getMovieInfo } from 'api/featchTmdbApi';
 
 import MovieItem from 'components/MovieItem/MovieItem';
 
 const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
+  const [isError, setIsError] = useState('');
 
   const { movieId } = useParams();
   const navigate = useNavigate();
@@ -18,7 +18,9 @@ const MovieDetails = () => {
         const dataMovie = await getMovieInfo(movieId);
         setMovie(dataMovie);
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
+        setIsError('No movies')
+        
         navigate('/', { replace: true });
       }
     };
@@ -32,18 +34,16 @@ const MovieDetails = () => {
 
   return (
     <>
-      {movie && <MovieItem movie={movie} />}
-
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-        toastOptions={{
-          style: {
-            background: 'rgb(11, 127, 171)',
-            color: '#fff',
-          },
-        }}
-      />
+      {movie.length !== 0
+        ? <MovieItem movie={movie} />
+        : <div style={{
+            color: "lightgrey",
+            fontWeight: "400",
+            fontSize: "14px",
+            paddingLeft: "40px",
+            paddingTop:"20px"
+        }}>{isError}</div>}
+      
       <Suspense fallback={null}>
         <Outlet />
       </Suspense>

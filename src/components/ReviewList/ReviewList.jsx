@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import { RevList, RevItem, RevName, RevText } from "./ReviewList.styled";
 
-const ReviewList = ({ reviews }) => {
+const ReviewList = ({ reviews, isError }) => {
+
   return (
     <section>
+      { isError &&  isError }
       <RevList>
         {reviews.map(({ id, author, content }) => {
           return (
@@ -28,4 +30,5 @@ ReviewList.propTypes = {
       content: PropTypes.string.isRequired,
     }).isRequired
   ).isRequired,
+  isError: PropTypes.string.isRequired
 };

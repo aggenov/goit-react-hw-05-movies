@@ -1,6 +1,15 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+export const Text = styled.h1`
+  margin: 0;
+  color: lightgrey;
+  padding-left: 12px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 24px;
+`;
+
 export const List = styled.ul`
   display: flex;
   flex-direction: column;

@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { RotatingLines } from 'react-loader-spinner';
-import toast from 'react-hot-toast';
+
 import ReviewList from 'components/ReviewList/ReviewList';
+
 import { getMovieReviews } from 'api/featchTmdbApi';
 
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [load, setLoad] = useState(false);
+  const [isError, setIsError] = useState('')
 
   const { movieId } = useParams();
 
@@ -26,13 +29,13 @@ const Reviews = () => {
         }));
 
         if (reviews.length === 0) {
-          toast.error(`No reviews.`);
+          setIsError(`No reviews`)
         }
         
         setReviews(reviews);
       }
       catch (error) {
-        console.log(error.message);
+        setIsError(error.message)
       }
       finally {
         setLoad(false);
@@ -53,7 +56,16 @@ const Reviews = () => {
           visible={true}
         />
       )}
-    {reviews && <ReviewList reviews={reviews} />}
+      {reviews.length !== 0
+        ? < ReviewList reviews={reviews} isError={isError} />
+        : <div style={{
+            color: "lightgrey",
+            fontWeight: "400",
+            fontSize: "14px",
+            paddingLeft: "40px",
+            paddingTop:"20px"
+        }}>{ isError }</div>
+        }
     </>
   ) 
 };

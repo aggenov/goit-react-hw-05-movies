@@ -4,7 +4,9 @@ import styled from 'styled-components';
 export const DetailsSection = styled.section`
   /* display: flex; */
   display: block;
-  padding: 20px;
+  /* padding: 20px; */
+  padding-top: 20px;
+  padding-bottom: 20px;
 `;
 
 export const Wraper = styled.div`

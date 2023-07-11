@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import toast from 'react-hot-toast';
 import { RotatingLines } from 'react-loader-spinner';
 
 import { getMovieCast } from 'api/featchTmdbApi';
@@ -11,6 +10,7 @@ import CastList from 'components/CastList/CastList';
 const Cast = () => {
   const [actors, setActors] = useState([]);
   const [load, setLoad] = useState(false);
+  const [isError, setIsError] = useState('');
 
   const { movieId } = useParams();
 
@@ -31,12 +31,12 @@ const Cast = () => {
         );
 
         if (actors.length === 0) {
-          toast.error(`No cast.`);
+          setIsError('No actors list');
         }
 
         setActors(actors);
       } catch (error) {
-        console.log(error.message);
+        setIsError(error.message)
       } finally {
         setLoad(false);
       }
@@ -46,9 +46,15 @@ const Cast = () => {
 
   return (
     <>
-      {actors
+      {actors.length !==0
         ? <CastList actors={actors} />
-        : <div>No actors list</div>}
+        : <div style={{
+            color: "lightgrey",
+            fontWeight: "400",
+            fontSize: "14px",
+            paddingLeft: "40px",
+            paddingTop:"20px"
+        }}>{isError}</div>}
       {' '}
       {load && (
         <RotatingLines

@@ -1,22 +1,26 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
 
 import  SearchBar  from "components/SearchBar/SearchBar";
 import  MovieList  from "components/MovieList/MovieList";
 
 import { getMoviesByQuery } from "api/featchTmdbApi";
+
 import { RotatingLines } from "react-loader-spinner";
 
 const Movies = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [moviesSearch, setMoviesSearch] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const query = searchParams.get('query') ?? '';
   const [load, setLoad] = useState(false);
+  const [isError, setIsError] = useState('');
+
+  const query = searchParams.get('query') ?? '';
 
    useEffect(() => {
-    const fetch = async () => {
+     const fetch = async () => {
+      setIsError("")
       if (query === '') {
         return;
       }
@@ -27,13 +31,13 @@ const Movies = () => {
         const movies = dataMovies.results;
 
         if (movies.length === 0) {
-          toast.error(`Sorry, the movies you requested: ${query} not found.`);
+          setIsError(`Sorry, the movies you requested: "${query}" not found.`)
         }
 
         setMoviesSearch(movies);
         setInputValue('');
       } catch (error) {
-        console.log(error);
+        setIsError('Oops...Somesing went wrong');
       } finally {
         setLoad(false);
       }
@@ -46,11 +50,16 @@ const Movies = () => {
     event.preventDefault();
 
     if (inputValue.trim() === '') {
-      toast.error('Fill in the search field');
+      setIsError('Fill in the search field');
       return;
     }
+
     const normalizedValue = event.target.elements.query.value.toLowerCase();
-    const nextSearchParams = inputValue !== '' ? { query: normalizedValue } : {};
+
+    const nextSearchParams = inputValue !== ''
+      ? { query: normalizedValue }
+      : {};
+    
     setSearchParams(nextSearchParams);
 
   };
@@ -64,7 +73,16 @@ const Movies = () => {
             value={inputValue}
             setInputValue={setInputValue}
           />
-          <MovieList movies={moviesSearch} />
+          
+          { isError === ""
+            ? <MovieList movies={moviesSearch} />
+            : <div style={{
+            color: "lightgrey",
+            fontWeight: "400",
+            fontSize: "18px",
+            paddingLeft: "24px",
+            paddingTop:"20px"
+        }}>{isError}</div>}
         </div>
         {load && (
           <RotatingLines
@@ -76,16 +94,6 @@ const Movies = () => {
           />
         )}
       </section>
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-        toastOptions={{
-          style: {
-            background: 'rgb(11, 127, 171)',
-            color: '#fff',
-          },
-        }}
-      />
     </>
   )
 }

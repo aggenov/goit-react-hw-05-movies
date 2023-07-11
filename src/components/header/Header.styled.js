@@ -19,12 +19,15 @@ export const NavLinks = styled(NavLink)`
 `;
 
 export const HeaderLinks = styled.header`
-  max-width: 1200px;
-  align-items: center;
-  justify-content: space-between;
-  /* gap: 12px; */
-  padding: 24px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 16px;
+  padding: 24px;
+
+  max-width: 1160px;
+
+  align-items: center;
+  /* justify-content: space-between; */
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px,
     rgba(0, 0, 0, 0.14) 0px 4px 5px 0px,
     rgba(11, 127, 171, 0.5) 0px 0px 25px 5px;
@@ -32,8 +35,10 @@ export const HeaderLinks = styled.header`
   > nav {
     display: flex;
     gap: 12px;
+    padding: 0;
     margin-left: auto;
     margin-right: auto;
-    max-width: 1200px;
+
+    /* max-width: 1200px; */
   }
 `;

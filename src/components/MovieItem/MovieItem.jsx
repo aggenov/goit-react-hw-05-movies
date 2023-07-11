@@ -21,8 +21,8 @@ export const defaultImg = 'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppi
 
 const MovieItem = ({ movie }) => {
   const location = useLocation();
-  const backLinkHref = location.state?.from ?? '/movies';
-  // const backLinkHref = location.state?.from ?? '/';
+  // const backLinkHref = location.state?.from ?? '/movies';
+  const backLinkHref = location.state?.from ?? '/';
 
   const { title, release_date, overview, genres, vote_average, poster_path } = movie;
 
@@ -58,15 +58,19 @@ const MovieItem = ({ movie }) => {
           </Description>
           <Text>Genres:</Text>
           <Genres>
-            {genres.map(el => (
-              <GenresItem key={el.id}>{el.name}</GenresItem>
-            ))}
+            {genres.length !== 0
+              ? genres.map(el => (
+                <GenresItem key={el.id}>{el.name}</GenresItem>
+                ))
+              : "No genres"
+            }
           </Genres>
         </Info>
       </Wraper>
 
       <Text>Additional information</Text>
-        <LinkList>
+      
+      <LinkList>
           <LinkItem>
             <LinkMovie to="cast" state={{ from: backLinkHref }}>
               Cast

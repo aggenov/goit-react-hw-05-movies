@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 
 import { getTrendingMovies } from "api/featchTmdbApi";
+
 import { RotatingLines } from "react-loader-spinner";
 
-import  TrendingMovieList  from "components/TrendingMovieList/TrendingMovieList";
+import MovieList from "components/MovieList/MovieList";
 
 
 const Home = () => {
 
-  const [moviesTrending, setMoviesTrending] = useState([]);
+  const [moviesSearch, setMoviesSearch] = useState([]);
   const [load, setLoad] = useState(false);
+  const [isError, setIsError] = useState('');
 
-  useEffect(() => { 
+  useEffect(() => {
     const fetch = async () => {
       setLoad(true);
       try {
@@ -22,20 +24,36 @@ const Home = () => {
           original_title,
         }));
 
-        setMoviesTrending(movies);
+        setMoviesSearch(movies);
       } catch (error) {
-        console.log(error);
+        setIsError('Oops...Somesing went wrong');
       } finally {
         setLoad(false);
       }
     };
+    
     fetch();
-  }, [])
+  }, []);
  
   
   return (
     <>
-      <TrendingMovieList movies={moviesTrending} />{' '}
+
+      <h1 style={{
+        color: 'lightgrey',
+        fontWeight: '700',
+        marginTop: '24px',
+        marginBottom: '24px',
+        paddingLeft: '12px',
+      }}>Trending today</h1>
+
+      {isError
+        ? {isError}
+        : <MovieList movies={moviesSearch} />
+      }
+
+      {' '}
+      
       {load && (
         <RotatingLines
           strokeColor="rgb(11, 127, 171)"
