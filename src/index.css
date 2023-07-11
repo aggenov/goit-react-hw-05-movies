@@ -48,4 +48,9 @@ h3,
 p,
 div {
   margin: 0;
+  color: lightgrey;
+}
+
+h1 {
+  color: lightgrey;
 }

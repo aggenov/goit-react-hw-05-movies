@@ -39,13 +39,7 @@ const Home = () => {
   return (
     <>
 
-      <h1 style={{
-        color: 'lightgrey',
-        fontWeight: '700',
-        marginTop: '24px',
-        marginBottom: '24px',
-        paddingLeft: '12px',
-      }}>Trending today</h1>
+      <h1>Trending today</h1>
 
       {isError
         ? {isError}
